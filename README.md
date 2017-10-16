@@ -17,12 +17,15 @@ Example apps are available in [Google Play](https://play.google.com/store/apps/d
 
 ## Recent Changes
 
-**0.6.1**
-- Updated RxAndroidBle library to version 1.3.3 which fixes internal issues which may
-  block execution of operation queue.
-- Updated dev dependencies to fix latest Flowtype issues.
-- Fixed bug when `restoreStateFunction` function could be called multiple times on iOS.
-
+**0.6.3**
+- Updated RxBluetoothKit library to version 3.1.1
+- Updated RxAndroidBle library to version 1.4.1
+- Fixed NullPointerException when calling BLE operations without previous discovery.
+- iOS emits values in `monitorCharacteristicForDevice` only when no reads are pending for specific characteristic.
+  Previously when characteristic was notified and read operation was completed, characteristic value was received
+  both in `readCharacteristicForDevice` and `monitorCharacteristicForDevice`. Now it will only be received in 
+  `readCharacteristicForDevice` promise.
+  
 [All previous changes](CHANGELOG.md)
 
 ## Documentation
@@ -39,7 +42,7 @@ wish to set up for iOS, please install it first and only then follow the steps g
 
 ```bash
 npm install --save react-native-ble-plx
-react-native link
+react-native link react-native-ble-plx
 ```
 
 Both on iOS and Android continue manually from step 7.
@@ -133,4 +136,14 @@ android {
     <uses-sdk
         android:minSdkVersion="18"
         ...
+```
+
+## Troubleshooting
+
+### Problems with Proguard
+
+Add this to your `app/proguard-rules.pro`
+
+```
+-dontwarn com.polidea.reactnativeble.**
 ```
